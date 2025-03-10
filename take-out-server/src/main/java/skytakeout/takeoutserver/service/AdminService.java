@@ -1,8 +1,6 @@
 package skytakeout.takeoutserver.service;
 
-import skytakeout.takeoutpojo.dto.Admin;
-import skytakeout.takeoutpojo.dto.AdminDTO;
-import skytakeout.takeoutpojo.dto.AdminLoginDTO;
+import skytakeout.takeoutpojo.dto.*;
 
 public interface AdminService {
 
@@ -10,4 +8,6 @@ public interface AdminService {
     Admin login(AdminLoginDTO adminLoginDTO);
 
     void save(AdminDTO adminDTO);
+
+    PageResult pageQuery(AdminPageQueryDTO adminPageQueryDTO);
 }

@@ -5,10 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import skytakeout.takeoutpojo.dto.Admin;
-import skytakeout.takeoutpojo.dto.AdminDTO;
-import skytakeout.takeoutpojo.dto.AdminLoginDTO;
-import skytakeout.takeoutpojo.dto.Result;
+import skytakeout.takeoutpojo.dto.*;
 import skytakeout.takeoutpojo.vo.AdminLoginVO;
 import skytakeout.takeoutserver.service.AdminService;
 
@@ -34,15 +31,22 @@ public class AdminController {
     }
 
     @PostMapping("/logout")
-    @ApiOperation(value = "员工登出")
+    @Operation(summary = "员工登出")
     public Result<String> logout() {
         return Result.success();
     }
 
     @PostMapping("/save")
-    @ApiOperation(value = "新增员工")
+    @Operation(summary = "新增员工")
     public Result save(@RequestBody AdminDTO adminDTO){
         adminService.save(adminDTO);
         return Result.success();
+    }
+
+    @GetMapping("/page")
+    @Operation(summary = "管理员分页查询")
+    public Result<PageResult> page(AdminPageQueryDTO adminPageQueryDTO){
+        PageResult pageResult = adminService.pageQuery(adminPageQueryDTO);
+        return Result.success(pageResult);
     }
 }

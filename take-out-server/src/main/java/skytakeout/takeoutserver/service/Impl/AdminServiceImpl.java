@@ -1,5 +1,7 @@
 package skytakeout.takeoutserver.service.Impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +11,11 @@ import skytakeout.Constant.PasswordConstant;
 import skytakeout.Constant.StatusConstant;
 import skytakeout.exception.AccountNotFoundException;
 import skytakeout.exception.PasswordErrorException;
-import skytakeout.takeoutpojo.dto.Admin;
-import skytakeout.takeoutpojo.dto.AdminDTO;
-import skytakeout.takeoutpojo.dto.AdminLoginDTO;
+import skytakeout.takeoutpojo.dto.*;
 import skytakeout.takeoutserver.mapper.AdminMapper;
 import skytakeout.takeoutserver.service.AdminService;
 
+import java.util.List;
 
 
 @Service
@@ -53,6 +54,17 @@ public class AdminServiceImpl implements AdminService {
         admin.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         admin.setStatus(StatusConstant.STATUS_OK);
         adminMapper.insert(admin);
+    }
+
+
+    public PageResult pageQuery(AdminPageQueryDTO adminPageQueryDTO) {
+        PageHelper.startPage(adminPageQueryDTO.getPage(), adminPageQueryDTO.getPageSize());
+
+        Page<Admin> page = adminMapper.pageQuery(adminPageQueryDTO);
+
+        long total = page.getTotal();
+        List<Admin> record = page.getResult();
+        return new PageResult(total, record);
     }
 
 }

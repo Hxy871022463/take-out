@@ -10,4 +10,6 @@ public interface AdminService {
     void save(AdminDTO adminDTO);
 
     PageResult pageQuery(AdminPageQueryDTO adminPageQueryDTO);
+
+    void startOrStop(Integer status, Long id);
 }

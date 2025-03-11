@@ -9,10 +9,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import skytakeout.takeoutserver.interceptor.JwtTokenAdminInterceptor;
 
 @Configuration
 @Slf4j
-public class WebMvcConfiguration{
+public class WebMvcConfiguration implements WebMvcConfigurer {
+
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new JwtTokenAdminInterceptor())
+                .addPathPatterns("/admin/admin/**")
+                .excludePathPatterns("/admin/admin/login");
+    }
 
     @Bean
     public OpenAPI openAPI() {

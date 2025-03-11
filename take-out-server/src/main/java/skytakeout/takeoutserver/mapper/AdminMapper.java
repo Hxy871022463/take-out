@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import skytakeout.takeoutpojo.dto.Admin;
 import skytakeout.takeoutpojo.dto.AdminPageQueryDTO;
 
@@ -19,4 +20,6 @@ public interface AdminMapper {
     void insert(Admin admin);
 
     Page<Admin> pageQuery(AdminPageQueryDTO adminPageQueryDTO);
+
+    void update(Admin admin);
 }

@@ -67,4 +67,12 @@ public class AdminServiceImpl implements AdminService {
         return new PageResult(total, record);
     }
 
+    public void startOrStop(Integer status, Long id) {
+        Admin admin = Admin.builder()
+                .status(status)
+                .id(id)
+                .build();
+        adminMapper.update(admin);
+    }
+
 }

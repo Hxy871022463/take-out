@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import skytakeout.takeoutpojo.dto.*;
 import skytakeout.takeoutpojo.vo.AdminLoginVO;
 import skytakeout.takeoutserver.service.AdminService;
+import skytakeout.utils.JwtUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Tag(name = "管理员相关接口")
 @RestController
@@ -22,11 +26,20 @@ public class AdminController {
     public Result<AdminLoginVO> Login(@RequestBody AdminLoginDTO adminLoginDTO) {
         Admin admin = adminService.login(adminLoginDTO);
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", admin.getId());
+        claims.put("name", admin.getName());
+        claims.put("username", admin.getUsername());
+
+        String token = JwtUtils.generateJwt(claims);
+
         AdminLoginVO adminLoginVO = AdminLoginVO.builder()
                 .id(admin.getId())
                 .username(admin.getUsername())
                 .name(admin.getName())
+                .token(token)
                 .build();
+
         return Result.success(adminLoginVO);
     }
 
@@ -48,5 +61,13 @@ public class AdminController {
     public Result<PageResult> page(AdminPageQueryDTO adminPageQueryDTO){
         PageResult pageResult = adminService.pageQuery(adminPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+
+    @PostMapping("/status/{status}")
+    @Operation(summary = "启用禁用管理员账号")
+    public Result status(@PathVariable Integer status, Long id){
+        adminService.startOrStop(status, id);
+        return Result.success();
     }
 }

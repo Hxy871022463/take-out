@@ -21,4 +21,7 @@ public class AdminLoginVO {
     @ApiModelProperty("名字")
     private String name;
 
+    @ApiModelProperty("jwt令牌")
+    private String token;
+
 }

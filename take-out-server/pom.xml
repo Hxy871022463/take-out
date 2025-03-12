@@ -70,13 +70,13 @@
             <groupId>sky-take-out</groupId>
             <artifactId>take-out-pojo</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <!--<scope>compile</scope>-->
         </dependency>
         <dependency>
             <groupId>sky-take-out</groupId>
             <artifactId>take-out-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <!--<scope>compile</scope>-->
         </dependency>
         <dependency>
             <groupId>sky-take-out</groupId>

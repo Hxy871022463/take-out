@@ -1,10 +1,11 @@
 package skytakeout.takeoutserver.controller;
 
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import skytakeout.Constant.JwtClaimsConstant;
+import skytakeout.properties.JwtProperties;
 import skytakeout.takeoutpojo.dto.*;
 import skytakeout.takeoutpojo.vo.AdminLoginVO;
 import skytakeout.takeoutserver.service.AdminService;
@@ -21,17 +22,21 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
     @Operation(summary = "管理员登录")
     @PostMapping("/login")
     public Result<AdminLoginVO> Login(@RequestBody AdminLoginDTO adminLoginDTO) {
         Admin admin = adminService.login(adminLoginDTO);
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", admin.getId());
-        claims.put("name", admin.getName());
-        claims.put("username", admin.getUsername());
+        claims.put(JwtClaimsConstant.EMP_ID, admin.getId());
+        String token = JwtUtils.createJWT(
+                jwtProperties.getAdminSecretKey(),
+                jwtProperties.getAdminTtl(),
+                claims);
 
-        String token = JwtUtils.generateJwt(claims);
 
         AdminLoginVO adminLoginVO = AdminLoginVO.builder()
                 .id(admin.getId())

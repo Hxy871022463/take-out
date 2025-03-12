@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,9 +17,12 @@ import skytakeout.takeoutserver.interceptor.JwtTokenAdminInterceptor;
 @Slf4j
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
+    @Autowired
+    private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JwtTokenAdminInterceptor())
-                .addPathPatterns("/admin/admin/**")
+        registry.addInterceptor(jwtTokenAdminInterceptor)
+                .addPathPatterns("/**")
                 .excludePathPatterns("/admin/admin/login");
     }
 
